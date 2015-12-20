@@ -11,7 +11,7 @@
             }
         ])
         .controller('mainCtrl', function($scope) {
-            $scope.myVar = "WTF";
+            $scope.myVar = "Example of angular variable";
         });
 
 }());
