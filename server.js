@@ -26,11 +26,24 @@ app.use(stylus.middleware(
 
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect('mongodb://localhost/meanapp');
+if(env == 'development'){
+    mongoose.connect('mongodb://localhost/meanapp');
+}else{
+    mongoose.connect('mongodb://admin:meanapp@ds047911.mongolab.com:47911/meanapp');
+}
+
 var db = mongoose.connection;
+
 db.on('error', console.error.bind(console, 'connection erorr...'));
 db.once('open', function () {
     console.log('Mean db opened');
+});
+
+var messageSchema = mongoose.Schema({message: String});
+var Message = mongoose.model('Message', messageSchema);
+var mongoMessage;
+Message.findOne().exec(function (err, messageDoc) {
+    mongoMessage = messageDoc.message;
 });
 
 app.get('/partials/:partialPath', function (req, res) {
@@ -38,9 +51,11 @@ app.get('/partials/:partialPath', function (req, res) {
 });
 
 app.get('*', function (req, res) {
-    res.render('index');
+    res.render('index',{
+        mongoMessage: mongoMessage,
+    });
 });
 
-var port = 3030;
+var port = process.env.PORT || 3030;
 app.listen(port);
 console.log('Listening on port: ' + port + '...');
