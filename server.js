@@ -1,58 +1,15 @@
-(function() {
-    'use strict';
-
-}());
-
-var express = require('express'),
-    stylus = require('stylus'),
-    logger = require ('morgan'),
-    bodyParser = require('body-parser');
-    mongoose = require('mongoose');
+var express = require('express');
+var mongoose = require('mongoose');
 
 var env =  process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
 
-function compile(str, path) {
-    return stylus(str).set('filename', path);
-}
+var config = require('./server/config/config')[env];
 
-app.set('views', __dirname + '/app/views');
-app.set('view engine', 'jade');
+require('./server/config/express')(app, config);
+require('./server/config/mongoose')(config);
+require('./server/config/routes')(app);
 
-app.use(logger('dev'));
-
-app.use(stylus.middleware(
-    {
-        src: __dirname + '/public',
-        compile: compile
-    }
-));
-
-app.use(express.static(__dirname + '/public'));
-
-if(env == 'development'){
-    mongoose.connect('mongodb://localhost/meanapp');
-}else{
-    mongoose.connect('mongodb://admin:meanapp@ds047911.mongolab.com:47911/meanapp');
-}
-
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection erorr...'));
-db.once('open', function () {
-    console.log('Mean db opened');
-});
-
-
-app.get('/partials/*', function (req, res) {
-    res.render('../../public/app/' +  req.params[0]);
-});
-
-app.get('*', function (req, res) {
-    res.render('index');
-});
-
-var port = process.env.PORT || 3030;
-app.listen(port);
-console.log('Listening on port: ' + port + '...');
+app.listen(config.port);
+console.log('Listening on port: ' + config.port + '...');
