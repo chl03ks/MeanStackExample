@@ -6,12 +6,9 @@
                 $routeProvider.
                 when('/', {
                     templateUrl: 'partials/main',
-                    controller: 'mainCtrl'
+                    controller: 'MainController'
                 });
             }
-        ])
-        .controller('mainCtrl', function($scope) {
-            $scope.myVar = "Example of angular variable";
-        });
+        ]);
 
 }());
