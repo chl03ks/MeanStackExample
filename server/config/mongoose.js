@@ -13,3 +13,19 @@ module.exports =function (config) {
     });
 
 };
+
+var userSchema = mongoose.Schema({
+    firstName: String,
+    lastName:  String,
+    userName:  String,
+});
+
+var User = mongoose.model('User', userSchema);
+
+User.find({}).exec(function (err, collection) {
+    if(collection.length === 0){
+        User.create({firstName: 'Daniel', lastName:'Garcia', userName: 'gvsdan'});
+        User.create({firstName: 'John', lastName:'Better', userName: 'betterjohn'});
+        User.create({firstName: 'Wall', lastName:'Goin', userName: 'yougoit'});
+    }
+});
