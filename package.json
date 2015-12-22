@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "nodemon": "nodemon server.js"
   },
+  "engines":{
+      "node": "4.2.1",
+      "npm": "2.14.7"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
