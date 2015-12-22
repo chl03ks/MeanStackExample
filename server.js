@@ -1,3 +1,8 @@
+(function() {
+    'use strict';
+
+}());
+
 var express = require('express'),
     stylus = require('stylus'),
     logger = require ('morgan'),
@@ -39,21 +44,13 @@ db.once('open', function () {
     console.log('Mean db opened');
 });
 
-var messageSchema = mongoose.Schema({message: String});
-var Message = mongoose.model('Message', messageSchema);
-var mongoMessage;
-Message.findOne().exec(function (err, messageDoc) {
-    mongoMessage = messageDoc.message;
-});
 
 app.get('/partials/:partialPath', function (req, res) {
     res.render('partials/' +  req.params.partialPath);
 });
 
 app.get('*', function (req, res) {
-    res.render('index',{
-        mongoMessage: mongoMessage,
-    });
+    res.render('index');
 });
 
 var port = process.env.PORT || 3030;
