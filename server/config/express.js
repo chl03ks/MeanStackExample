@@ -4,7 +4,6 @@ var stylus = require('stylus');
 var bodyParser  = require('body-parser');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
-
 var session = require('express-session');
 
 module.exports = function( app, config ){
@@ -18,13 +17,12 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(cookieParser());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(session({
     secret: 'secret',
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: true
 }));
 
